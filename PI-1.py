@@ -29,48 +29,50 @@ def interpolaMatriz(matriz, tipoInterpolacao, tipoOperacao):
         elif tipoOperacao == "reducao":
             print("Realizando interpolação bilinear para redução.")
 
-print("Quantas linhas a matriz possui?")
-qtdLinhas = int(input())
-print("Quantas colunas a matriz possui?")
-qtdColunas = int(input())
+def main():
+    print("Quantas linhas a matriz possui?")
+    qtdLinhas = int(input())
+    print("Quantas colunas a matriz possui?")
+    qtdColunas = int(input())
 
-matriz =  [[] for i in range(qtdLinhas)]
+    matriz =  [[] for i in range(qtdLinhas)]
 
-for i in range(qtdLinhas):
-    for j in range(qtdColunas):
-        print(f"Elemento [{i}][{j}]: ")
-        matriz[i][j] = int(input())
+    for i in range(qtdLinhas):
+        for j in range(qtdColunas):
+            print(f"Elemento [{i}][{j}]: ")
+            matriz[i][j] = int(input())
 
-print("Matriz: ")
-for i in range(qtdLinhas):
-    for j in range(qtdColunas):
-        print(matriz[i][j], end=" ")
-    print()
+    print("Matriz: ")
+    for i in range(qtdLinhas):
+        for j in range(qtdColunas):
+            print(matriz[i][j], end=" ")
+        print()
 
-print("Escolha a interpolação a ser realizada:")
-print("1 - Interpolação Vizinho mais proximo")
-print("2 - Interpolação Bilinear")
-interpolacaoSelecionada = int(input()) 
+    print("Escolha a interpolação a ser realizada:")
+    print("1 - Interpolação Vizinho mais proximo")
+    print("2 - Interpolação Bilinear")
+    interpolacaoSelecionada = int(input()) 
 
-print("Selecione a opção de interpolação:")
-print("1 - Ampliação")
-print("2 - Redução")
-opcaoInterpolacao = int(input())
+    print("Selecione a opção de interpolação:")
+    print("1 - Ampliação")
+    print("2 - Redução")
+    opcaoInterpolacao = int(input())
 
-match interpolacaoSelecionada:
-    case 1:
-        print("Interpolação Vizinho mais proximo selecionada.")
-        if opcaoInterpolacao == 1:
-            interpolaMatriz(matriz, "vizinho", "ampliacao")
-    case 2:
-        print("Interpolação Bilinear selecionada.")
-    case _:
-        print("Interpolação inválida.")
+    match interpolacaoSelecionada:
+        case 1:
+            print("Interpolação Vizinho mais proximo selecionada.")
+            if opcaoInterpolacao == 1:
+                matrizNova = interpolaMatriz(matriz, "vizinho", "ampliacao")
+            if opcaoInterpolacao == 2:
+                matrizNova = interpolaMatriz(matriz, "vizinho", "reducao")
+        case 2:
+            print("Interpolação Bilinear selecionada.")
+            if opcaoInterpolacao == 1:
+                matrizNova = interpolaMatriz(matriz, "bilinear", "ampliacao")
+            if opcaoInterpolacao == 2:
+                matrizNova = interpolaMatriz(matriz, "bilinear", "reducao")
+        case _:
+            print("Interpolação inválida.")
 
-match opcaoInterpolacao:
-    case 1:
-        print("Ampliação selecionada.")
-    case 2:
-        print("Redução selecionada.")
-    case _:
-        print("Opção de interpolação inválida.")
+if __name__ == "__main__":
+    main()
