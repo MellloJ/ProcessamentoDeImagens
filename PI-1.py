@@ -107,6 +107,30 @@ def interpolaMatriz(matriz, tipoInterpolacao, tipoOperacao):
         elif tipoOperacao == "reducao":
             print("Realizando interpolação bilinear para redução.")
 
+            linhas = len(matriz)
+            colunas = len(matriz[0])
+
+            #Duplicando a ultima linha e/ou coluna se os valores não forem pares
+            if linhas % 2 != 0:
+                matriz.append(matriz[-1][:])  # cópia da última linha
+                linhas += 1
+            if colunas % 2 != 0:
+                for i in range(linhas):
+                    matriz[i].append(matriz[i][-1]) # cópia do último elemento de cada linha (coluna nova)
+                colunas += 1
+
+            # Cria nova matriz com metade das dimensões
+            novaMatriz = [[0 for _ in range(colunas // 2)] for _ in range(linhas // 2)]
+
+            for i in range(len(matriz)):
+                for j in range(len(matriz[i])):
+                    if i % 2 == 0 and j % 2 == 0:
+                        novoValor = (matriz[i][j] + matriz[i][j+1] + matriz[i+1][j] + matriz[i+1][j+1]) // 4
+
+                        novaMatriz[i//2][j//2] = novoValor
+
+            return novaMatriz
+
 def main():
     # print("Quantas linhas a matriz possui?")
     # qtdLinhas = int(input())
