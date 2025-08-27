@@ -60,11 +60,12 @@ def interpolaMatriz(matriz, tipoInterpolacao, tipoOperacao):
                         continue
 
                     novaLinha.append(matriz[i][j])
-                    novaLinha.append(matriz[i][j])
                 novaMatriz.append(novaLinha)
             return novaMatriz
             
     elif tipoInterpolacao == "bilinear":
+        matriz = np.array(matriz, dtype=np.int32)
+        
         if tipoOperacao == "ampliacao":
             print("Realizando interpolação bilinear para ampliação.")
 
@@ -160,10 +161,10 @@ def main():
     qtdColunas = len(matriz[0])
 
     print("Matriz: ")
-    for i in range(qtdLinhas):
-        for j in range(qtdColunas):
-            print(matriz[i][j], end=" ")
-        print()
+    # for i in range(qtdLinhas):
+    #     for j in range(qtdColunas):
+    #         print(matriz[i][j], end=" ")
+    #     print()
 
     print("Escolha a interpolação a ser realizada:")
     print("1 - Interpolação Vizinho mais proximo")
@@ -193,8 +194,8 @@ def main():
             print("Interpolação inválida.")
 
     print("\nMatriz original:")
-    for linha in matriz:
-        print(' '.join(str(x) for x in linha))
+    # for linha in matriz:
+    #     print(' '.join(str(x) for x in linha))
 
     print("\nNova matriz:")
     if matrizNova is not None:
@@ -206,8 +207,8 @@ def main():
         # Convertendo a matriz em um array NumPy para poder gerar e exibir a imagem novamente
         matrizNova = np.array(matrizNova, dtype=np.uint8)
 
-        for linha in matrizNova:
-            print(' '.join(str(x) for x in linha))
+        # for linha in matrizNova:
+        #     print(' '.join(str(x) for x in linha))
 
         novaImagem = Image.fromarray(matrizNova)  # Convertendo de volta para imagem
         novaImagem.save(f'imagens/{nomeNovaImagem}')
