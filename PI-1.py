@@ -1,3 +1,12 @@
+from PIL import Image
+import numpy as np
+
+def extrairMatriz():
+    image = Image.open("imagens/ai-generated-8366447_640.jpg")
+    image = image.convert("L")  # Convertendo para escala de cinza
+    matriz = np.array(image)
+    return matriz
+
 def interpolaMatriz(matriz, tipoInterpolacao, tipoOperacao):
     novaMatriz = []
     if tipoInterpolacao == "vizinho":
@@ -74,15 +83,20 @@ def main():
     #         print(f"Elemento [{i}][{j}]: ")
     #         matriz[i][j] = int(input())
 
-    qtdLinhas = 4
-    qtdColunas = 4
+    # qtdLinhas = 4
+    # qtdColunas = 4
 
-    matriz = [
-        [20, 40, 40, 20],
-        [40, 20, 54, 30],
-        [60, 30, 80, 40],
-        [70, 70, 20, 60]
-    ]
+    # matriz = [
+    #     [20, 40, 40, 20],
+    #     [40, 20, 54, 30],
+    #     [60, 30, 80, 40],
+    #     [70, 70, 20, 60]
+    # ]
+
+    matriz = extrairMatriz()
+
+    qtdLinhas = len(matriz)
+    qtdColunas = len(matriz[0])
 
     print("Matriz: ")
     for i in range(qtdLinhas):
@@ -123,8 +137,20 @@ def main():
 
     print("\nNova matriz:")
     if matrizNova is not None:
+        interpolacao = "vizinho" if interpolacaoSelecionada == 1 else "bilinear"
+        operacao = "ampliacao" if opcaoInterpolacao == 1 else "reducao"
+
+        nomeNovaImagem = f'/imagem_{operacao}_{interpolacao}.jpg'
+
+        # Convertendo a matriz em um array NumPy para poder gerar e exibir a imagem novamente
+        matrizNova = np.array(matrizNova, dtype=np.uint8)
+
         for linha in matrizNova:
             print(' '.join(str(x) for x in linha))
+
+        novaImagem = Image.fromarray(matrizNova)  # Convertendo de volta para imagem
+        novaImagem.save(f'imagens/{nomeNovaImagem}')
+        novaImagem.show()
     else:
         print("Nenhuma matriz nova gerada.")
 
