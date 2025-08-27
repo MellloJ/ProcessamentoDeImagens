@@ -67,6 +67,43 @@ def interpolaMatriz(matriz, tipoInterpolacao, tipoOperacao):
     elif tipoInterpolacao == "bilinear":
         if tipoOperacao == "ampliacao":
             print("Realizando interpolação bilinear para ampliação.")
+
+            # Construindo o a estrutura da nova matriz:
+            numLinhas = 2 * len(matriz) - 1
+            numColunas = 2 * len(matriz[0]) - 1
+
+            # inicialização da nova Matriz
+            novaMatriz = [[0 for _ in range(numColunas)] for _ in range(numLinhas)]
+
+            # Preenchendo os valores iniciais:
+            for i in range(numLinhas):
+                for j in range(numColunas):
+                    # Valores originais
+                    if i % 2 == 0 and j % 2 == 0:
+                        novaMatriz[i][j] = matriz[i//2][j//2]
+
+            # Interpolação
+            for i in range(numLinhas):
+                for j in range(numColunas):
+
+                    # Valores originais
+                    if i % 2 == 0 and j % 2 == 0:
+                        try:
+                            novaMatriz[i][j+1] = (novaMatriz[i][j] + novaMatriz[i][j+2]) // 2
+                        except IndexError:
+                            pass
+
+                        try:
+                            novaMatriz[i+1][j+1] = (novaMatriz[i][j] + novaMatriz[i+2][j] + novaMatriz[i][j+2] + novaMatriz[i+2][j+2]) // 4
+                        except IndexError:
+                            pass
+
+                        try:
+                            novaMatriz[i+1][j] = (novaMatriz[i][j] + novaMatriz[i+2][j]) // 2
+                        except IndexError:
+                            pass
+            return novaMatriz
+
         elif tipoOperacao == "reducao":
             print("Realizando interpolação bilinear para redução.")
 
