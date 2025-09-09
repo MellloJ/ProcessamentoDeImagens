@@ -1,6 +1,11 @@
 from PIL import Image
 import numpy as np
 
+def extrairMatrizColorida():
+    image = Image.open("imagens/ai-generated-8366447_640.jpg")
+    matriz = np.array(image)
+    return matriz
+
 def extrairMatrizCinza():
     image = Image.open("imagens/ai-generated-8366447_640.jpg")
     image = image.convert("L")  # Convertendo para escala de cinza
