@@ -1,11 +1,5 @@
-from PIL import Image
 import numpy as np
-
-def extrairMatriz():
-    image = Image.open("imagens/ai-generated-8366447_640.jpg")
-    image = image.convert("L")  # Convertendo para escala de cinza
-    matriz = np.array(image)
-    return matriz
+from commons import *
 
 def interpolaMatriz(matriz, tipoInterpolacao, tipoOperacao):
     novaMatriz = []
@@ -155,7 +149,7 @@ def main():
     #     [70, 70, 20, 60]
     # ]
 
-    matriz = extrairMatriz()
+    matriz = extrairMatrizCinza()
 
     qtdLinhas = len(matriz)
     qtdColunas = len(matriz[0])
@@ -210,9 +204,7 @@ def main():
         # for linha in matrizNova:
         #     print(' '.join(str(x) for x in linha))
 
-        novaImagem = Image.fromarray(matrizNova)  # Convertendo de volta para imagem
-        novaImagem.save(f'imagens/{nomeNovaImagem}')
-        novaImagem.show()
+        salvarImagem(matrizNova, nomeNovaImagem)
     else:
         print("Nenhuma matriz nova gerada.")
 
