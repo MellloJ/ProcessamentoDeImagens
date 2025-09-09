@@ -1,5 +1,9 @@
+from commons import *
+import numpy as np
+import random
+
 def rotulacao(matrix):
-    matriz_rotulada = [[0 for _ in range(len(matrix[0]))] for _ in range(len(matrix))]
+    matriz_rotulada = np.zeros_like(matrix, dtype=np.uint32)
     proximo_rotulo = 1
     equivalencias = dict()
 
@@ -37,16 +41,9 @@ def rotulacao(matrix):
                 elif rotulo_esquerda == rotulo_cima:
                     matriz_rotulada[linha][coluna] = rotulo_esquerda
 
-    print("\nEquivalências de rótulos:")
-    for rotulo, equivalentes in equivalencias.items():
-        print(f"{rotulo}: {sorted(equivalentes)}")
+    print(f"\nQuantidade de equivalências de rótulos: {len(equivalencias)}")
 
     # Segunda passagem: substituir labels equivalentes pelo menor label do grupo
-    # Construir grupos de equivalência
-    def encontrar_representante(rotulo, representantes):
-        while representantes[rotulo] != rotulo:
-            rotulo = representantes[rotulo]
-        return rotulo
 
     # Inicializa cada rótulo como seu próprio representante
     representantes = {k: k for k in range(1, proximo_rotulo)}
@@ -71,24 +68,38 @@ def rotulacao(matrix):
 
     return matriz_rotulada
 
+# Construir grupos de equivalência
+def encontrar_representante(rotulo, representantes):
+    while representantes[rotulo] != rotulo:
+        rotulo = representantes[rotulo]
+    return rotulo
+
+# Gera uma imagem colorida: cada rótulo recebe uma cor
+def matriz_para_rgb(matriz_rotulada):
+    shape = matriz_rotulada.shape
+    imagem_rgb = np.zeros((shape[0], shape[1], 3), dtype=np.uint8)
+
+    rotulos = np.unique(matriz_rotulada)
+
+    print(f"Quantidade de rótulos únicos encontrados: {len(rotulos)}")
+
+    cores = {rotulo: (random.randint(0,255), random.randint(0,255), random.randint(0,255)) for rotulo in rotulos if rotulo != 0}
+    for i in range(shape[0]):
+        for j in range(shape[1]):
+            rotulo = matriz_rotulada[i, j]
+            if rotulo == 0:
+                imagem_rgb[i, j] = (0, 0, 0)
+            else:
+                imagem_rgb[i, j] = cores[rotulo]
+    return imagem_rgb
+
 def main():
-    matriz = [
-        [1, 1, 0, 0, 0],
-        [1, 1, 0, 1, 1],
-        [0, 0, 0, 1, 1],
-        [0, 1, 1, 0, 0],
-        [1, 1, 0, 0, 1]
-    ]
-
-    print("Matriz original:")
-    for linha in matriz:
-        print(' '.join(str(x) for x in linha))
-
+    matriz = extrairMatrizBinaria()
+    
     matriz_rotulada = rotulacao(matriz)
 
-    print("\nMatriz rotulada:")
-    for linha in matriz_rotulada:
-        print(' '.join(str(x) for x in linha))
+    imagem_colorida = matriz_para_rgb(matriz_rotulada)
 
+    salvarImagem(imagem_colorida, "imagem_rotulada.jpg")
 if __name__ == "__main__":
     main()
