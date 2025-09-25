@@ -1,6 +1,8 @@
 from commons import extrairMatrizCinza, salvarImagem
 import numpy as np
 
+# Filtro de Média
+
 def filtroMedia(matriz, tamanhoJanela=3):
     linhas = len(matriz)
     colunas = len(matriz[0])

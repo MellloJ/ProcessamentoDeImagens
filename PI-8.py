@@ -1,6 +1,8 @@
 from commons import extrairMatrizCinza, salvarImagem
 import numpy as np
 
+# Filtro Laplaciano
+
 laplacian_masks = {
     "a": [[0, -1,  0],
           [-1,  4, -1],
