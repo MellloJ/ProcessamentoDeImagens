@@ -113,6 +113,7 @@ def main():
 	# 7) Salvar resultados
 	original_img_path = os.path.join(out_dir, 'original.png')
 	equalized_img_path = os.path.join(out_dir, 'equalized.png')
+	
 	cv2.imwrite(original_img_path, img)
 	cv2.imwrite(equalized_img_path, img_eq)
 
