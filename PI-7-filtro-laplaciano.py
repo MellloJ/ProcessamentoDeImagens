@@ -19,23 +19,30 @@ laplacian_masks = {
           [1,  1,  1]]
 }
 
-def duplicarBordas(matriz):
+def duplicarBordas(matriz, tamanho_mascara=3):
     linhas = len(matriz)
     colunas = len(matriz[0])
+    
+    pad = tamanho_mascara - 1
 
-    novaMatriz = [[0 for _ in range(colunas + 1)] for _ in range(linhas + 1)]
+    novaMatriz = [[0 for _ in range(colunas + pad)] for _ in range(linhas + pad)]
 
     for i in range(linhas):
         for j in range(colunas):
             novaMatriz[i][j] = matriz[i][j]
 
     for i in range(linhas):
-        novaMatriz[i][colunas] = matriz[i][colunas-1]
+        for k in range(pad):
+            novaMatriz[i][colunas + k] = matriz[i][colunas - 1]
 
-    for j in range(colunas):
-        novaMatriz[linhas][j] = matriz[linhas-1][j]
+    for k in range(pad):
+        for j in range(colunas):
+            novaMatriz[linhas + k][j] = matriz[linhas - 1][j]
 
-    novaMatriz[linhas][colunas] = matriz[linhas-1][colunas-1]
+    ultimo = matriz[linhas - 1][colunas - 1]
+    for ki in range(pad):
+        for kj in range(pad):
+            novaMatriz[linhas + ki][colunas + kj] = ultimo
 
     return novaMatriz
 
@@ -43,6 +50,8 @@ def duplicarBordas(matriz):
 def aplicarMascaraLaplaciano(matriz, mascara):
     linhas = len(matriz)
     colunas = len(matriz[0])
+
+    matriz = [[int(matriz[i][j]) for j in range(colunas)] for i in range(linhas)]
 
     # Trata as bordas
     matrizExpandida = duplicarBordas(matriz)
@@ -95,6 +104,8 @@ def main():
         return
 
     matrizFiltrada = aplicarMascaraLaplaciano(matrizCinza, mascara)
+
+    matrizFiltrada = np.array(matrizFiltrada, dtype=np.uint8)
 
     matrizFiltrada = np.array(matrizFiltrada, dtype=np.uint8)
     salvarImagem(matrizFiltrada, f"laplaciano_{nomeMascara}.png")
