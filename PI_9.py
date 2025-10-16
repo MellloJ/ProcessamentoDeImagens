@@ -58,8 +58,8 @@ def print_image(matrizImagem):
 def main():
     imagemBinaria = extrairMatrizBinaria().tolist() 
     
-    print("Imagem original:")
-    print_image(imagemBinaria)
+    # print("Imagem original:")
+    # print_image(imagemBinaria)
     
     print("\nSelecione a operação morfológica:")
     print("1 - Dilatação")
@@ -78,12 +78,15 @@ def main():
         print("Opção inválida.")
         return
     
-    print(f"\nImagem {nomeOperacao}:")
-    print_image(imagemResultado)
+    # print(f"\nImagem {nomeOperacao}:")
+    # print_image(imagemResultado)
     
     # Converte para 0/255 e salva a imagem
     imagemResultadoNp = np.array(imagemResultado, dtype=np.uint8) * 255
     salvarImagem(imagemResultadoNp, f"{nomeOperacao}_cruz.png")
+
+    imagemBinaria = np.array(imagemBinaria, dtype=np.uint8) * 255
+    salvarImagem(imagemBinaria, "imagem_binaria.png")
 
 if __name__ == "__main__":
     main()
